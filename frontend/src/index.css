@@ -1,0 +1,4 @@
+/* Why these 3 lines: they import all of Tailwind's styles into our project */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
