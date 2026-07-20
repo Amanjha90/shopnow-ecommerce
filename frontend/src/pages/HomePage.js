@@ -3,6 +3,8 @@ import axios from 'axios'
 import ProductCard from '../components/ProductCard'
 import { FaSearch } from 'react-icons/fa'
 
+const API_URL = process.env.REACT_APP_API_URL
+
 const HomePage = () => {
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(true)
@@ -13,7 +15,7 @@ const HomePage = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const { data } = await axios.get('http://localhost:5000/api/products')
+        const { data } = await axios.get(`${API_URL}/api/products`)
         setProducts(data)
         setLoading(false)
       } catch (error) {
@@ -34,7 +36,6 @@ const HomePage = () => {
 
   if (loading) return (
     <div className='flex justify-center items-center h-screen'>
-      {/* Why animate-spin: shows spinning loader while products are fetching */}
       <div className='animate-spin rounded-full h-16 w-16 border-t-4 border-yellow-400'></div>
     </div>
   )
@@ -47,8 +48,6 @@ const HomePage = () => {
 
   return (
     <div>
-      {/* Hero Banner */}
-      {/* Why hero banner: first thing user sees, makes site look professional */}
       <div className='bg-gray-900 text-white py-16 px-4'>
         <div className='container mx-auto text-center'>
           <h1 className='text-5xl font-bold mb-4'>
@@ -57,8 +56,6 @@ const HomePage = () => {
           <p className='text-xl text-gray-300 mb-8'>
             Discover amazing products at unbeatable prices
           </p>
-
-          {/* Hero search bar */}
           <div className='flex max-w-2xl mx-auto'>
             <input
               type='text'
@@ -74,8 +71,6 @@ const HomePage = () => {
         </div>
       </div>
 
-      {/* Stats bar */}
-      {/* Why stats: builds trust with users like real e-commerce sites */}
       <div className='bg-yellow-400 py-4'>
         <div className='container mx-auto px-4'>
           <div className='grid grid-cols-3 gap-4 text-center text-gray-900 font-semibold'>
@@ -86,10 +81,7 @@ const HomePage = () => {
         </div>
       </div>
 
-      {/* Main content */}
       <div className='container mx-auto px-4 py-8'>
-
-        {/* Category filters */}
         <div className='flex gap-2 mb-6 flex-wrap'>
           {categories.map(cat => (
             <button
@@ -106,14 +98,12 @@ const HomePage = () => {
           ))}
         </div>
 
-        {/* Results count */}
         <p className='text-gray-500 mb-4'>
           Showing {filteredProducts.length} products
           {category !== 'All' && ` in ${category}`}
           {search && ` for "${search}"`}
         </p>
 
-        {/* Products grid */}
         {filteredProducts.length === 0 ? (
           <div className='text-center py-16'>
             <p className='text-2xl text-gray-400'>No products found</p>
@@ -133,8 +123,6 @@ const HomePage = () => {
         )}
       </div>
 
-      {/* Footer */}
-      {/* Why footer: every professional website has a footer */}
       <footer className='bg-gray-900 text-white py-8 mt-12'>
         <div className='container mx-auto px-4'>
           <div className='grid grid-cols-1 md:grid-cols-3 gap-8'>

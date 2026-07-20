@@ -3,8 +3,9 @@ import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { useAuth } from '../context/AuthContext'
 
+const API_URL = process.env.REACT_APP_API_URL
+
 const RegisterPage = () => {
-  // Why these states: track what user types in each input field
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -16,25 +17,18 @@ const RegisterPage = () => {
   const navigate = useNavigate()
 
   const submitHandler = async (e) => {
-    e.preventDefault() // Why: prevents page reload on form submit
-
-    // Why check passwords match: prevent user from setting wrong password
+    e.preventDefault()
     if (password !== confirmPassword) {
       setError('Passwords do not match')
       return
     }
-
     try {
       setLoading(true)
-      // Why this request: sends user data to backend register route
-      const { data } = await axios.post('http://localhost:5000/api/users/register', {
+      const { data } = await axios.post(`${API_URL}/api/users/register`, {
         name,
         email,
         password
       })
-
-      // Why login(data): automatically log in user after registration
-      // No need to make them login again after just registering
       login(data)
       navigate('/')
     } catch (error) {
@@ -47,15 +41,10 @@ const RegisterPage = () => {
     <div className='min-h-screen bg-gray-100 flex items-center justify-center'>
       <div className='bg-white p-8 rounded-lg shadow-md w-full max-w-md'>
         <h1 className='text-2xl font-bold mb-6 text-center'>Register</h1>
-
         {error && (
-          <div className='bg-red-100 text-red-600 p-3 rounded mb-4'>
-            {error}
-          </div>
+          <div className='bg-red-100 text-red-600 p-3 rounded mb-4'>{error}</div>
         )}
-
         <form onSubmit={submitHandler}>
-          {/* Name field */}
           <div className='mb-4'>
             <label className='block text-gray-700 mb-2'>Name</label>
             <input
@@ -67,8 +56,6 @@ const RegisterPage = () => {
               required
             />
           </div>
-
-          {/* Email field */}
           <div className='mb-4'>
             <label className='block text-gray-700 mb-2'>Email</label>
             <input
@@ -80,8 +67,6 @@ const RegisterPage = () => {
               required
             />
           </div>
-
-          {/* Password field */}
           <div className='mb-4'>
             <label className='block text-gray-700 mb-2'>Password</label>
             <input
@@ -93,9 +78,6 @@ const RegisterPage = () => {
               required
             />
           </div>
-
-          {/* Confirm Password field */}
-          {/* Why: makes sure user typed password correctly */}
           <div className='mb-6'>
             <label className='block text-gray-700 mb-2'>Confirm Password</label>
             <input
@@ -107,7 +89,6 @@ const RegisterPage = () => {
               required
             />
           </div>
-
           <button
             type='submit'
             disabled={loading}
@@ -116,8 +97,6 @@ const RegisterPage = () => {
             {loading ? 'Registering...' : 'Register'}
           </button>
         </form>
-
-        {/* Why show login link: user might already have an account */}
         <p className='text-center mt-4 text-gray-600'>
           Already have an account?{' '}
           <Link to='/login' className='text-blue-600 hover:underline'>
