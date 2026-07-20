@@ -6,12 +6,11 @@ require('dotenv').config()
 const productRoutes = require('./routes/productRoutes')
 const userRoutes = require('./routes/userRoutes')
 const orderRoutes = require('./routes/orderRoutes')
-const paymentRoutes = require('./routes/paymentRoutes')
 
 const app = express()
 
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: '*',
   credentials: true
 }))
 app.use(express.json())
@@ -23,8 +22,6 @@ mongoose.connect(process.env.MONGO_URI)
 app.use('/api/products', productRoutes)
 app.use('/api/users', userRoutes)
 app.use('/api/orders', orderRoutes)
-// Why /api/payment: all payment related requests go to paymentRoutes
-app.use('/api/payment', paymentRoutes)
 
 app.get('/', (req, res) => {
   res.send('E-Commerce API is running...')
