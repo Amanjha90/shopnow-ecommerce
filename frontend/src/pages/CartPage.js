@@ -4,24 +4,19 @@ import { useAuth } from '../context/AuthContext'
 import { toast } from 'react-toastify'
 
 const CartPage = () => {
-  // Why useCart: to get cart items, remove function and total price
-  const { cartItems, removeFromCart, cartTotal, clearCart } = useCart()
-  // Why useAuth: to check if user is logged in before checkout
+  const { cartItems, removeFromCart, cartTotal } = useCart()
   const { user } = useAuth()
   const navigate = useNavigate()
 
   const checkoutHandler = () => {
-    // Why check login: user must be logged in to place an order
     if (!user) {
       toast.error('Please login to checkout')
       navigate('/login')
     } else {
-      // Why navigate to checkout: goes to proper checkout page
       navigate('/checkout')
     }
   }
 
-  // Why show empty message: if cart is empty, no point showing empty table
   if (cartItems.length === 0) {
     return (
       <div className='min-h-screen flex flex-col items-center justify-center'>
@@ -48,25 +43,18 @@ const CartPage = () => {
               key={item._id}
               className='flex items-center gap-4 bg-white p-4 rounded-lg shadow mb-4'
             >
-              {/* Product image */}
               <img
                 src={item.image}
                 alt={item.name}
                 className='w-20 h-20 object-cover rounded'
               />
-
-              {/* Product details */}
               <div className='flex-1'>
                 <h3 className='font-semibold text-lg'>{item.name}</h3>
                 <p className='text-gray-500'>{item.category}</p>
-                {/* Why show quantity: user needs to know how many they added */}
                 <p className='text-blue-600 font-bold'>
                   ₹{item.price} × {item.quantity} = ₹{item.price * item.quantity}
                 </p>
               </div>
-
-              {/* Remove button */}
-              {/* Why: user should be able to remove items they don't want */}
               <button
                 onClick={() => removeFromCart(item._id)}
                 className='text-red-500 hover:text-red-700 font-semibold'
@@ -78,7 +66,6 @@ const CartPage = () => {
         </div>
 
         {/* Order summary */}
-        {/* Why separate section: clearly shows total and checkout button */}
         <div className='bg-white p-6 rounded-lg shadow h-fit'>
           <h2 className='text-xl font-bold mb-4'>Order Summary</h2>
 
@@ -94,7 +81,6 @@ const CartPage = () => {
 
           <div className='flex justify-between mb-2'>
             <span className='text-gray-600'>Shipping</span>
-            {/* Why free shipping above 500: common e-commerce practice */}
             <span className='text-green-500'>
               {cartTotal > 500 ? 'Free' : '₹50'}
             </span>
